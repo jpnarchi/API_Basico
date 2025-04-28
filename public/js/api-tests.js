@@ -195,7 +195,6 @@ async function testUsersAPI() {
 async function runAllTests() {
     clearConsole();
     log('Starting API tests...', 'info');
-    await testItemsAPI();
-    await testUsersAPI();
-    log('All tests completed!', 'success');
+    // Tests will be added as we implement each endpoint
+    log('No tests implemented yet.', 'warning');
 } 

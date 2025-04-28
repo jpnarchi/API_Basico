@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API REST - Gestión de Items</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #itemsList {
+            margin-top: 20px;
+        }
+        .item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Items</h1>
+    
+    <div class="container">
+        <div id="itemForm">
+            <h2>Agregar/Editar Item</h2>
+            <div class="form-group">
+                <input type="text" id="itemName" placeholder="Nombre del item">
+                <input type="text" id="itemDescription" placeholder="Descripción del item">
+                <input type="text" id="itemRarity" placeholder="Rareza del item">
+                <input type="text" id="itemType" placeholder="Tipo de item">
+                <button onclick="saveItem()">Guardar</button>
+            </div>
+        </div>
+
+        <div id="itemsList">
+            <h2>Lista de Items</h2>
+            <!-- Los items se cargarán aquí dinámicamente -->
+        </div>
+    </div>
+
+    <script>
+        let currentItemId = null;
+
+        // Cargar items al iniciar
+        window.onload = loadItems;
+
+        async function loadItems() {
+            try {
+                const response = await fetch('/api/items');
+                const items = await response.json();
+                displayItems(items);
+            } catch (error) {
+                console.error('Error al cargar items:', error);
+            }
+        }
+
+        function displayItems(items) {
+            const itemsList = document.getElementById('itemsList');
+            itemsList.innerHTML = '<h2>Lista de Items</h2>';
+            
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                itemDiv.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <p><strong>Rareza:</strong> ${item.rarity}</p>
+                    <p><strong>Tipo:</strong> ${item.type}</p>
+                    <button onclick="editItem(${item.id})">Editar</button>
+                    <button onclick="deleteItem(${item.id})">Eliminar</button>
+                `;
+                itemsList.appendChild(itemDiv);
+            });
+        }
+
+        async function saveItem() {
+            const name = document.getElementById('itemName').value;
+            const description = document.getElementById('itemDescription').value;
+            const rarity = document.getElementById('itemRarity').value;
+            const type = document.getElementById('itemType').value;
+
+            if (!name || !description || !rarity || !type) {
+                alert('Por favor complete todos los campos');
+                return;
+            }
+
+            const item = { name, description, rarity, type };
+            const url = currentItemId ? `/api/items/${currentItemId}` : '/api/items';
+            const method = currentItemId ? 'PUT' : 'POST';
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(item)
+                });
+
+                if (response.ok) {
+                    document.getElementById('itemName').value = '';
+                    document.getElementById('itemDescription').value = '';
+                    document.getElementById('itemRarity').value = '';
+                    document.getElementById('itemType').value = '';
+                    currentItemId = null;
+                    loadItems();
+                } else {
+                    alert('Error al guardar el item');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar el item');
+            }
+        }
+
+        async function editItem(id) {
+            try {
+                const response = await fetch(`/api/items/${id}`);
+                const item = await response.json();
+                
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemDescription').value = item.description;
+                document.getElementById('itemRarity').value = item.rarity;
+                document.getElementById('itemType').value = item.type;
+                currentItemId = id;
+            } catch (error) {
+                console.error('Error al cargar el item:', error);
+            }
+        }
+
+        async function deleteItem(id) {
+            if (!confirm('¿Está seguro de eliminar este item?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/items/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    loadItems();
+                } else {
+                    alert('Error al eliminar el item');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el item');
+            }
+        }
+    </script>
+</body>
+</html> 

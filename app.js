@@ -215,6 +215,7 @@ app.put('/users/:id', (req, res) => {
     });
 });
 
+// Server startup
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 }); 
