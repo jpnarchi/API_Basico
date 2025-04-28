@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Item Management API</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Game Item Management API</h1>
+            <p>API Documentation and Test Interface</p>
+        </header>
+
+        <main>
+            <section class="api-docs">
+                <h2>API Documentation</h2>
+                
+                <div class="endpoint">
+                    <h3>Items Endpoints</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>POST</td>
+                                <td>/items</td>
+                                <td>Register new item(s)</td>
+                            </tr>
+                            <tr>
+                                <td>GET</td>
+                                <td>/items</td>
+                                <td>Get all items</td>
+                            </tr>
+                            <tr>
+                                <td>GET</td>
+                                <td>/items/:id</td>
+                                <td>Get item by ID</td>
+                            </tr>
+                            <tr>
+                                <td>DELETE</td>
+                                <td>/items/:id</td>
+                                <td>Delete item by ID</td>
+                            </tr>
+                            <tr>
+                                <td>PUT</td>
+                                <td>/items/:id</td>
+                                <td>Update item by ID</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="endpoint">
+                    <h3>Users Endpoints</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>POST</td>
+                                <td>/users</td>
+                                <td>Register new user(s)</td>
+                            </tr>
+                            <tr>
+                                <td>GET</td>
+                                <td>/users</td>
+                                <td>Get all users</td>
+                            </tr>
+                            <tr>
+                                <td>GET</td>
+                                <td>/users/:id</td>
+                                <td>Get user by ID</td>
+                            </tr>
+                            <tr>
+                                <td>DELETE</td>
+                                <td>/users/:id</td>
+                                <td>Delete user by ID</td>
+                            </tr>
+                            <tr>
+                                <td>PUT</td>
+                                <td>/users/:id</td>
+                                <td>Update user by ID</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="test-interface">
+                <h2>Test Interface</h2>
+                <div class="test-controls">
+                    <button onclick="runAllTests()">Run All Tests</button>
+                    <button onclick="clearConsole()">Clear Console</button>
+                </div>
+                <div class="console-output">
+                    <pre id="console-output"></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/api-tests.js"></script>
+</body>
+</html> 
